@@ -1,0 +1,27 @@
+model User{
+    id Int @id  @default(autoincrement())
+    email String 
+    name String
+    Cars Cars[]
+}
+
+model Cars{
+    id Int @id @default(autoincrement())
+    license_plate String @unique
+    brand String
+    model String
+    year DateTime
+    userID Int
+    user User @relation(fields: [userID], references: [id])
+    care Care[]
+}
+
+model Care{
+    id Int @id @default(autoincrement())
+    header String 
+    km Int
+    cost Int
+    transaction_date DateTime
+    carID Int
+    car Cars @relation(fields: [carID], references: [id])
+}
