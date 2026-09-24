@@ -24,7 +24,7 @@ exports.kullaniciSil = async(req,res)=>{
         res.status(500).json({mesaj:"kullanıcı silinemedi"})
     }
 }
-exports.kullaniciListele = async(req,res)=>{
+exports.kullaniciListele = async(_,res)=>{
 try {
     const kullaniciListesi = await prisma.user.findMany();
     res.status(200).json({mesaj: "kullanıcılar listelendi",kullaniciListesi})
