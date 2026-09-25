@@ -1,14 +1,14 @@
 const express = require('express');
-const app = express();
+const router = express.Router();
 
-const {aracEkle,aracBul,aracGüncele,aracListele,aracSil}=require("../controller/carsController");
+const {aracEkle,aracBul,aracGüncele,aracListele,aracSil, aracGetir}=require("../controller/carsController");
 
-app.put('/:id',aracGüncele);
-app.get('/listele',aracListele);
-app.get('/:id',aracBul);
-app.post('/ekle',aracEkle);
-app.delete('/:id',aracSil);
+router.put('/:id',aracGüncele);
+router.get('/listele',aracListele);
+router.get('/:id',aracBul);
+router.post('/ekle',aracEkle);
+router.delete('/:id',aracSil);
+router.get("/:id",aracGetir);
 
-
-module.exports = {app};
+module.exports = router;
 
