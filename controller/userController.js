@@ -61,3 +61,15 @@ exports.kullaniciFiltrele= async(req,res)=>{
         res.status(500).json({mesaj:"kullanılar filtelenemedi"})
     }
 }
+     exports.kullaniciGetir = async(req,res)=>{
+        try {
+            const arananID = req.params.id;
+            const aranankullanici = prisma.cars.findUnique({
+                where : {id : arananID}
+            })
+            res.status(200).json({mesaj : "kullanici bulundu",aranankullanici})
+        } catch (error) {
+            console.error("Bakım bulunurken hata oluştu.",error);
+            res.status(500).json({hata: "bkullanici bulunamadı, lütfen verileri kontrol ediniz"})
+        }
+    }

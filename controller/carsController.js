@@ -1,6 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma =new PrismaClient();
-const aracEkle = async(req,res)=>{
+exports.aracEkle = async(req,res)=>{
     try {
         const {plaka, marka, model, yil, kullaniciId} = req.body;
         const yeniArac = await prisma.cars.create({
@@ -20,7 +20,7 @@ const aracEkle = async(req,res)=>{
         res.status(500).json({hata: "Araç eklenemedi, lütfen verileri kontrol ediniz"})
     }
 }
-const aracListele = async(req,res)=>{
+exports.aracListele = async(req,res)=>{
     try {
         const aracListesi=await prisma.cars.findMany();
         res.status(200).json({mesaj:"Araçlar listelendi",
@@ -86,5 +86,16 @@ exports.aracBul = async(req,res)=>{
     res.status(500).json({hata: "Araçlar bulunamadımedi, lütfen verileri kontrol ediniz"})
     }
 }
-module.exports={aracEkle,
-    aracListele}
+
+exports.aracGetir = async(req,res)=>{
+    try {
+        const arananID = req.params.id;
+        const arananArac = prisma.cars.findUnique({
+            where : {id : arananID}
+        })
+        res.status(200).json({mesaj : "araç bulundu",arananArac})
+    } catch (error) {
+        console.error("Araç bulunurken hata oluştu.",error);
+        res.status(500).json({hata: "Araç bulunamadı, lütfen verileri kontrol ediniz"})
+    }
+}

@@ -80,3 +80,17 @@ exports.bakimFiltrele = async (req,res)=>{
         res.status(500).json({mesaj:"bakımlar listelenemedi"})
     }    
     }
+
+    
+    exports.bakimGetir = async(req,res)=>{
+        try {
+            const arananID = req.params.id;
+            const arananBakim = prisma.cars.findUnique({
+                where : {id : arananID}
+            })
+            res.status(200).json({mesaj : "bakım bulundu",arananBakim})
+        } catch (error) {
+            console.error("Bakım bulunurken hata oluştu.",error);
+            res.status(500).json({hata: "bakım bulunamadı, lütfen verileri kontrol ediniz"})
+        }
+    }
