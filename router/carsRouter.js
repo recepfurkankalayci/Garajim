@@ -5,7 +5,7 @@ const {aracEkle,aracBul,aracGüncele,aracListele,aracSil, aracGetir}=require("..
 
 router.put('/:id',aracGüncele);
 router.get('/listele',aracListele);
-router.get('/:id',aracBul);
+router.get('/filtrele',aracBul);
 router.post('/ekle',aracEkle);
 router.delete('/:id',aracSil);
 router.get("/:id",aracGetir);

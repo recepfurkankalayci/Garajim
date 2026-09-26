@@ -7,10 +7,10 @@ const carsRouter = require('./router/carsRouter');
 app.use('/araclar',carsRouter);
 
 const careRouter = require('./router/careRouter');
-app.use('bakimlar',careRouter);
+app.use('/bakimlar',careRouter);
 
 const userRouter = require('./router/userRouter');
-app.use('kullanicilar',userRouter);
+app.use('/kullanicilar',userRouter);
 
 app.listen(port,( () => {console.log(`Sunucu http://localhost:${port} adresinde dinleniyor...`)}))
 

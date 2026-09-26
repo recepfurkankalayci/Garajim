@@ -1,15 +1,16 @@
-const { PrismaClient } = require("@prisma/client");
-const prisma =new PrismaClient();
+const prisma = require('../database');
+
 exports.aracEkle = async(req,res)=>{
     try {
-        const {plaka, marka, model, yil, kullaniciId} = req.body;
+        const {license_plate, brand, model, year, userID, gkm} = req.body;
         const yeniArac = await prisma.cars.create({
             data: {
-                plaka : plaka,
-                marka : marka,
+                license_plate,
+                brand,
                 model : model,
-                yil : yil,
-                kullaniciId : kullaniciId
+                year,
+                userID,
+                gkm
             }
         });
         res.status(201).json({mesaj : "araç oluşturuldu.",
@@ -20,7 +21,7 @@ exports.aracEkle = async(req,res)=>{
         res.status(500).json({hata: "Araç eklenemedi, lütfen verileri kontrol ediniz"})
     }
 }
-exports.aracListele = async(req,res)=>{
+exports.aracListele = async(_,res)=>{
     try {
         const aracListesi=await prisma.cars.findMany();
         res.status(200).json({mesaj:"Araçlar listelendi",
@@ -33,8 +34,11 @@ exports.aracListele = async(req,res)=>{
 }
  exports.aracGüncele  = async(req,res) =>{
     try {
-        const aracID = parseInt(req.params.id);
-        const {license_plate, brand, model, year} = req.body;
+        const aracID = Number.parseInt(req.params.id, 10);
+        if (!Number.isInteger(aracID)) {
+            return res.status(400).json({ hata: "Geçersiz araç ID." });
+        }
+        const {license_plate, brand, model, year,gkm} = req.body;
 
         const guncellenenArac = await prisma.cars.update({
             where:{id : aracID},
@@ -42,12 +46,11 @@ exports.aracListele = async(req,res)=>{
                 license_plate,
                 brand,
                 model,
-                year
+                year,
+                gkm
             }
         });
-        res.status(200).json({mesaj:"araç güncellendi"},
-            guncellenenArac
-        )
+        res.status(200).json({mesaj:"araç güncellendi", arac: guncellenenArac})
     } catch (error) {
         console.error("Araç güncellenirken hata oluştu.",error);
         res.status(500).json({hata: "Araçlar güncellenemedi, lütfen verileri kontrol ediniz"})
@@ -89,10 +92,16 @@ exports.aracBul = async(req,res)=>{
 
 exports.aracGetir = async(req,res)=>{
     try {
-        const arananID = req.params.id;
-        const arananArac = prisma.cars.findUnique({
+        const arananID = Number.parseInt(req.params.id, 10);
+        if (!Number.isInteger(arananID)) {
+            return res.status(400).json({ hata: "Geçersiz araç ID." });
+        }
+        const arananArac = await prisma.cars.findUnique({
             where : {id : arananID}
         })
+        if (!arananArac) {
+            return res.status(404).json({ hata: "Araç bulunamadı." });
+        }
         res.status(200).json({mesaj : "araç bulundu",arananArac})
     } catch (error) {
         console.error("Araç bulunurken hata oluştu.",error);

@@ -1,15 +1,15 @@
-const { PrismaClient } = require("@prisma/client");
-const prisma =new PrismaClient();
+const prisma = require('../database');
 
 exports.bakimolustur = async (req,res)=>{
-    const{header,hkm,transaction_date,cost}=req.body;
+    const{header,hkm,transaction_date,cost,carID}=req.body;
     try {    
         const bakim = await prisma.care.create({
         data : {
             header,
             hkm,
             transaction_date,
-            cost
+            cost,
+            carID
         }
     })
     res.status(200).json({mesaj : "bakım oluşturuldu",bakim});  
@@ -71,9 +71,9 @@ exports.bakimFiltrele = async (req,res)=>{
            transaction_date: transaction_date ? new Date(transaction_date) : undefined,
             cost: cost ? parseInt(cost, 10) : undefined
         };
-        const filtrelenmisListe = await prisma.care.findMany(
-            {where : {filtreler}}
-        )
+        const filtrelenmisListe = await prisma.care.findMany({
+            where: filtreler
+        })
         res.status(200).json({mesaj: "bakımlar filtelendi",filtrelenmisListe})
     } catch (error) {
      console.error(error)
@@ -84,10 +84,16 @@ exports.bakimFiltrele = async (req,res)=>{
     
     exports.bakimGetir = async(req,res)=>{
         try {
-            const arananID = req.params.id;
-            const arananBakim = prisma.cars.findUnique({
+            const arananID = Number.parseInt(req.params.id, 10);
+            if (!Number.isInteger(arananID)) {
+                return res.status(400).json({ hata: "Geçersiz bakım ID." });
+            }
+            const arananBakim = await prisma.care.findUnique({
                 where : {id : arananID}
             })
+            if (!arananBakim) {
+                return res.status(404).json({ hata: "Bakım bulunamadı." });
+            }
             res.status(200).json({mesaj : "bakım bulundu",arananBakim})
         } catch (error) {
             console.error("Bakım bulunurken hata oluştu.",error);

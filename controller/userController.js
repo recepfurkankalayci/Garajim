@@ -1,8 +1,7 @@
-const { PrismaClient } = require("@prisma/client");
-const prisma =new PrismaClient();
+const prisma = require('../database');
 
 exports.kullaniciolustur =async(req,res)=>{
-    try {   const {email,name}=req.body;
+    try {const {email,name}=req.body;
     const yeniKullanici = await prisma.user.create({
         data:
         {email,
@@ -17,7 +16,7 @@ exports.kullaniciolustur =async(req,res)=>{
 exports.kullaniciSil = async(req,res)=>{
     try {
         const kullaniciID =parseInt(req.params.id);
-        const silinenKullanıcı = await prisma.user.delete({where : {id:kullaniciID}})
+        const silinenKullanici = await prisma.user.delete({where : {id:kullaniciID}})
         res.status(200).json({mesaj: "kullanıcı silindi",silinenKullanici})
     } catch (error) {
         console.error(error)
@@ -64,10 +63,16 @@ exports.kullaniciFiltrele= async(req,res)=>{
 }
 exports.kullaniciGetir = async(req,res)=>{
     try {
-    const arananID = req.params.id;
-    const aranankullanici = prisma.cars.findUnique({
+    const arananID = Number.parseInt(req.params.id, 10);
+    if (!Number.isInteger(arananID)) {
+        return res.status(400).json({ hata: "Geçersiz kullanıcı ID." });
+    }
+    const aranankullanici = await prisma.user.findUnique({
         where : {id : arananID}
     })
+    if (!aranankullanici) {
+        return res.status(404).json({ hata: "Kullanıcı bulunamadı." });
+    }
     res.status(200).json({mesaj : "kullanici bulundu",aranankullanici})
     } catch (error) {
         console.error("Bakım bulunurken hata oluştu.",error);
