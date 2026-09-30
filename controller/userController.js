@@ -76,6 +76,6 @@ exports.kullaniciGetir = async(req,res)=>{
     res.status(200).json({mesaj : "kullanici bulundu",aranankullanici})
     } catch (error) {
         console.error("Bakım bulunurken hata oluştu.",error);
-        res.status(500).json({hata: "bkullanici bulunamadı, lütfen verileri kontrol ediniz"})
+        res.status(500).json({hata: "kullanici bulunamadı, lütfen verileri kontrol ediniz"})
     }
 }
