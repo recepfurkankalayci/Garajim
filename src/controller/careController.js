@@ -51,12 +51,12 @@ exports.bakimFiltrele = async (req,res)=>{
     }
 
     
-    exports.bakimGetir = async(req,res)=>{
-        try {
-           const bakim = await careService.bakimGetir(req.params.id);
-            res.status(200).json({mesaj : "bakım bulundu",bakim})
-        } catch (error) {
-            console.error("Bakım bulunurken hata oluştu.",error);
-            res.status(500).json({hata: "bakım bulunamadı, lütfen verileri kontrol ediniz"})
-        }
+exports.bakimGetir = async(req,res)=>{
+    try {
+        const bakim = await careService.bakimGetir(req.params.id);
+        res.status(200).json({mesaj : "bakım bulundu",bakim})
+    } catch (error) {
+        console.error("Bakım bulunurken hata oluştu.",error);
+        res.status(500).json({hata: "bakım bulunamadı, lütfen verileri kontrol ediniz"})
     }
+}
