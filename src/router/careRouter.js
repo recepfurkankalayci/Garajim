@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const care = require('../controller/careController');
+const care = require('./src/controller/careController');
 
 router.get('/listele',care.bakimListele);
 router.get('/filtrele',care.bakimFiltrele);

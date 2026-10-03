@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const {aracEkle,aracBul,aracGüncele,aracListele,aracSil, aracGetir}=require("../controller/carsController");
+const {aracEkle,aracBul,aracGüncele,aracListele,aracSil, aracGetir}=require("./src/controller/carsController");
 
 router.put('/:id',aracGüncele);
 router.get('/listele',aracListele);

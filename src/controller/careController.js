@@ -1,18 +1,9 @@
-const prisma = require('../database');
+const careServices = require('./care.service');
 
 exports.bakimolustur = async (req,res)=>{
-    const{header,hkm,transaction_date,cost,carID}=req.body;
-    try {    
-        const bakim = await prisma.care.create({
-        data : {
-            header,
-            hkm,
-            transaction_date,
-            cost,
-            carID
-        }
-    })
-    res.status(200).json({mesaj : "bakım oluşturuldu",bakim});  
+    try{
+    const yeniBakim = await careService.bakimEkle(req.body);
+    res.status(200).json({mesaj : "bakım oluşturuldu",yeniBakim});  
     } catch (error) {
         console.error(error);
         res.status(500).json("bakım oluşturulamadı. verilerinizi kontrol ediniz");
@@ -20,10 +11,8 @@ exports.bakimolustur = async (req,res)=>{
 
 }
 exports.bakimsil = async (req,res)=>{
-    try {  const bakmID = parseInt(req.params.id,10);
-    const silinenbakim = await prisma.care.delete({
-        where : {id:bakmID}
-    })
+    try {  
+      const silinenbakim = await careService.bakimSil(req.params.id);
       res.status(200).json({mesaj : "bakım silindi",silinenbakim});    
     } catch (error) {
         console.error(error);
@@ -33,30 +22,18 @@ exports.bakimsil = async (req,res)=>{
 
 exports.bakimguncelle = async (req,res)=>{
     try {
-       const bakmID = parseInt(req.params.id,10);
-       if(isNaN(bakmID)){
-       return res.status(400).json({ hata: "Geçersiz bakım ID." });
-       }else{
-       const{header,hkm,transaction_date,cost}=req.body;
-       const guncelBakim= await prisma.care.update({where : {id : bakmID},
-        data : {
-            header,
-            hkm,
-            transaction_date,
-            cost
-        }
-       })
-         res.status(200).json({mesaj : "bakım güncellendi",guncelBakim});  
-       }
-    } catch (error) {
+       const guncellenenBakim = await careService.bakimGuncelle(req.params.id, req.body);      
+       res.status(200).json({mesaj : "bakım güncellendi",guncellenenBakim});  
+       } 
+    catch (error) {
          console.error(error);
         res.status(500).json("bakım güncelenemedi. verilerinizi kontrol ediniz");
     }
 }
 
 exports.bakimListele = async (_,res)=>{
-   try{ const liste = await prisma.care.findMany();
-        res.status(200).json({mesaj: "bakımlar listelendi",liste})
+   try{ const bakimlar = await careService.bakimListele();
+        res.status(200).json({mesaj: "bakımlar listelendi",bakimlar})
 } catch (error) {
     console.error(error)
     res.status(500).json({mesaj:"bakımlar listelenemedi"})
@@ -64,16 +41,8 @@ exports.bakimListele = async (_,res)=>{
 }
 
 exports.bakimFiltrele = async (req,res)=>{
-    try {const {header,hkm,transaction_date,cost} = req.query;
-        const filtreler = {
-            header: header,
-            hkm: hkm ? parseInt(hkm, 10) : undefined,
-           transaction_date: transaction_date ? new Date(transaction_date) : undefined,
-            cost: cost ? parseInt(cost, 10) : undefined
-        };
-        const filtrelenmisListe = await prisma.care.findMany({
-            where: filtreler
-        })
+    try {
+        const bakim = await careServices.bakimguncelle(req.query)
         res.status(200).json({mesaj: "bakımlar filtelendi",filtrelenmisListe})
     } catch (error) {
      console.error(error)
@@ -84,17 +53,8 @@ exports.bakimFiltrele = async (req,res)=>{
     
     exports.bakimGetir = async(req,res)=>{
         try {
-            const arananID = Number.parseInt(req.params.id, 10);
-            if (!Number.isInteger(arananID)) {
-                return res.status(400).json({ hata: "Geçersiz bakım ID." });
-            }
-            const arananBakim = await prisma.care.findUnique({
-                where : {id : arananID}
-            })
-            if (!arananBakim) {
-                return res.status(404).json({ hata: "Bakım bulunamadı." });
-            }
-            res.status(200).json({mesaj : "bakım bulundu",arananBakim})
+           const bakim = await careService.bakimGetir(req.params.id);
+            res.status(200).json({mesaj : "bakım bulundu",bakim})
         } catch (error) {
             console.error("Bakım bulunurken hata oluştu.",error);
             res.status(500).json({hata: "bakım bulunamadı, lütfen verileri kontrol ediniz"})

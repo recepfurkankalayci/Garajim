@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const{kulaniciGüncelle,kullaniciGetir,kullaniciSil,kullaniciolustur,kullaniciListele,kullaniciFiltrele}=require("../controller/userController");
+const{kulaniciGüncelle,kullaniciGetir,kullaniciSil,kullaniciolustur,kullaniciListele,kullaniciFiltrele}=require("./src/controller/userController");
 
 router.get('/filtrele',kullaniciFiltrele);
 router.get('/listele',kullaniciListele);

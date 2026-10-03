@@ -1,12 +1,8 @@
-const prisma = require('../database');
+const userService = require('./userService');
 
 exports.kullaniciolustur =async(req,res)=>{
-    try {const {email,name}=req.body;
-    const yeniKullanici = await prisma.user.create({
-        data:
-        {email,
-        name}
-    });
+    try {
+    const yeniKullanici = await userService.kullaniciEkle(req.body);   
     res.status(201).json({mesaj: "kullanıcı oluşturuldu",yeniKullanici})
     } catch (error) {
         console.error(error)
@@ -15,8 +11,7 @@ exports.kullaniciolustur =async(req,res)=>{
 }
 exports.kullaniciSil = async(req,res)=>{
     try {
-        const kullaniciID =parseInt(req.params.id);
-        const silinenKullanici = await prisma.user.delete({where : {id:kullaniciID}})
+        const silinenKullanici = await userService.kullaniciSil(req.params.id);
         res.status(200).json({mesaj: "kullanıcı silindi",silinenKullanici})
     } catch (error) {
         console.error(error)
@@ -25,36 +20,26 @@ exports.kullaniciSil = async(req,res)=>{
 }
 exports.kullaniciListele = async(_,res)=>{
 try {
-    const kullaniciListesi = await prisma.user.findMany();
-    res.status(200).json({mesaj: "kullanıcılar listelendi",kullaniciListesi})
+    const kullanicilar = await userService.kullaniciListele();
+    res.status(200).json({mesaj: "kullanıcılar listelendi",kullanicilar})
 } catch (error) {
     console.error(error)
         res.status(500).json({mesaj:"kullanıcılar listelenemedi"})
 }
 }
 exports.kulaniciGüncelle= async(req,res)=>{
-    try { const kullaniciID= parseInt(req.params.id);
-        const {email,name}=req.body;
-    const kullanici = await prisma.user.update({
-        where:{id:kullaniciID},
-        data:{
-            email,
-            name
-        }
-    })
-        res.status(200).json({mesaj: "kullanıcı güncellendi",kullanici})
+    try { const guncellenenKullanici = await userService.kullaniciGuncelle(req.params.id, req.body);
+        res.status(200).json({mesaj: "kullanıcı güncellendi",guncellenenKullanici})
     } catch (error) {
-        console.error(error)
+        if (error.message.includes("bulunamadı")) {
+            return res.status(404).json({ hata: error.message });
+        }
         res.status(500).json({mesaj:"kullanıcı güncellenemedi"})
     }
 }
 exports.kullaniciFiltrele= async(req,res)=>{
     try {  
-    const {email,name}=req.query;
-    const filtrele = await prisma.user.findMany({
-        where:{email,
-        name}
-    })
+    const bakim = await careServices.bakimguncelle(req.query)
     res.status(200).json({mesaj: "kullanıcılar filtrelendi",filtrele})
     } catch (error) {
         console.error(error)
@@ -63,19 +48,13 @@ exports.kullaniciFiltrele= async(req,res)=>{
 }
 exports.kullaniciGetir = async(req,res)=>{
     try {
-    const arananID = Number.parseInt(req.params.id, 10);
-    if (!Number.isInteger(arananID)) {
-        return res.status(400).json({ hata: "Geçersiz kullanıcı ID." });
+        const kullanici = await userService.kullaniciGetir(req.params.id);
+        res.status(200).json({ mesaj: "Kullanıcı bulundu.", kullanici });
     }
-    const aranankullanici = await prisma.user.findUnique({
-        where : {id : arananID}
-    })
-    if (!aranankullanici) {
-        return res.status(404).json({ hata: "Kullanıcı bulunamadı." });
-    }
-    res.status(200).json({mesaj : "kullanici bulundu",aranankullanici})
-    } catch (error) {
-        console.error("Bakım bulunurken hata oluştu.",error);
-        res.status(500).json({hata: "kullanici bulunamadı, lütfen verileri kontrol ediniz"})
+    catch (error) {
+       if (error.message.includes("bulunamadı")) {
+            return res.status(404).json({ hata: error.message });
+        }
+        res.status(400).json({ hata: error.message });
     }
 }
