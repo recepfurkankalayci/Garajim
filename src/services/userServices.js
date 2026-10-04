@@ -1,7 +1,7 @@
 const userRepository = require('./repositories/UserRepository');
 
 exports.userEkle = async (data) => {
-
+    
     return await userRepository.create(data);
 };
 

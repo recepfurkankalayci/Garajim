@@ -1,5 +1,6 @@
 const prisma = require('../database');
 
+
 exports.creat = async(data)=>{
    return await prisma.user.create({data});
 };
@@ -32,3 +33,7 @@ exports.findByFilters = async (filters) => {
         where: filters 
     });
 }
+
+exports.findByEmail = async (email) => {
+    return await prisma.user.findUnique({ where: { email } });
+};

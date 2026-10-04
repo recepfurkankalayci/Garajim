@@ -1,5 +1,6 @@
 const userService = require('./userService');
 
+
 exports.kullaniciolustur =async(req,res)=>{
     try {
     const yeniKullanici = await userService.kullaniciEkle(req.body);   
@@ -40,7 +41,7 @@ exports.kulaniciGüncelle= async(req,res)=>{
 exports.kullaniciFiltrele= async(req,res)=>{
     try {  
     const bakim = await careServices.bakimguncelle(req.query)
-    res.status(200).json({mesaj: "kullanıcılar filtrelendi",filtrele})
+    res.status(200).json({mesaj: "kullanıcılar filtrelendi",bakim})
     } catch (error) {
         console.error(error)
         res.status(500).json({mesaj:"kullanılar filtelenemedi"})
