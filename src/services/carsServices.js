@@ -1,58 +1,56 @@
-const carRepository = require('./repositories/userRepository');
+const carRepository = require('../repositories/CarsRepository');
 
 exports.aracEkle = async (data) => {
-
-    return await carRepository.create(data);
+  return await carRepository.create(data);
 };
 
 exports.aracListele = async () => {
-    return await carRepository.FindAll();
+  return await carRepository.findAll();
 };
 
 exports.aracGetir = async (id) => {
-    const aracID = Number.parseInt(id, 10);
-    
-    if (!Number.isInteger(aracID)) {
-        throw new Error("Geçersiz araç ID."); 
-    }
+  const aracID = Number.parseInt(id, 10);
 
-    const arac = await carRepository.findById(aracID);
-    
-    if (!arac) {
-        throw new Error("Araç bulunamadı."); 
-    }
-    
-    return arac;
-}
+  if (!Number.isInteger(aracID)) {
+    throw new Error('Geçersiz araç ID.');
+  }
 
-exports.aracGuncelle = async (id,data) => {
-    const aracID = Number.parseInt(id, 10);
+  const arac = await carRepository.findById(aracID);
 
-    if(!Number.isInteger(aracID)){
-        throw new Error("Geçersiz araç ID.")
-    }
+  if (!arac) {
+    throw new Error('Araç bulunamadı.');
+  }
 
-    return await carRepository.update(aracID, data);
-}
+  return arac;
+};
+
+exports.aracGuncelle = async (id, data) => {
+  const aracID = Number.parseInt(id, 10);
+
+  if (!Number.isInteger(aracID)) {
+    throw new Error('Geçersiz araç ID.');
+  }
+
+  return await carRepository.update(aracID, data);
+};
 
 exports.aracSil = async (id) => {
-    const aracID = Number.parseInt(id, 10);
+  const aracID = Number.parseInt(id, 10);
 
-    if (!Number.isInteger(aracID)) {
-        throw new Error("Geçersiz araç ID.");
-    }
+  if (!Number.isInteger(aracID)) {
+    throw new Error('Geçersiz araç ID.');
+  }
 
-    return await carRepository.delet(aracID);
-}
+  return await carRepository.delete(aracID);
+};
 
-exports.aracBul = async (query) => {
-   
-    const filters = {
-        brand: query.brand,
-        model: query.model,
-        license_plate: query.license_plate,
-        year: query.year ? parseInt(query.year, 10) : undefined
-    };
-    
-    return await carRepository.findByFilters(filters);
+exports.aracBul = async (query = {}) => {
+  const filters = {
+    brand: query.brand,
+    model: query.model,
+    license_plate: query.license_plate,
+    year: query.year ? parseInt(query.year, 10) : undefined,
+  };
+
+  return await carRepository.findByFilters(filters);
 };

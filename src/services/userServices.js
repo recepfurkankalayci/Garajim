@@ -1,56 +1,54 @@
-const userRepository = require('./repositories/UserRepository');
+const userRepository = require('../repositories/UserRepostory');
 
 exports.userEkle = async (data) => {
-    
-    return await userRepository.create(data);
+  return await userRepository.create(data);
 };
 
 exports.userListele = async () => {
-    return await userRepository.FindAll();
+  return await userRepository.findAll();
 };
 
 exports.userGetir = async (id) => {
-    const userID = Number.parseInt(id, 10);
-    
-    if (!Number.isInteger(userID)) {
-        throw new Error("Geçersiz user ID."); 
-    }
+  const userID = Number.parseInt(id, 10);
 
-    const user = await userRepository.findById(userID);
-    
-    if (!user) {
-        throw new Error("Kullanıcı bulunamadı."); 
-    }
-    
-    return user;
-}
+  if (!Number.isInteger(userID)) {
+    throw new Error('Geçersiz user ID.');
+  }
 
-exports.userGuncelle = async (id,data) => {
-    const userID = Number.parseInt(id, 10);
+  const user = await userRepository.findById(userID);
 
-    if(!Number.isInteger(userID)){
-        throw new Error("Geçersiz user ID.")
-    }
+  if (!user) {
+    throw new Error('Kullanıcı bulunamadı.');
+  }
 
-    return await userRepository.update(userID, data);
-}
+  return user;
+};
+
+exports.userGuncelle = async (id, data) => {
+  const userID = Number.parseInt(id, 10);
+
+  if (!Number.isInteger(userID)) {
+    throw new Error('Geçersiz user ID.');
+  }
+
+  return await userRepository.update(userID, data);
+};
 
 exports.userSil = async (id) => {
-    const userID = Number.parseInt(id, 10);
+  const userID = Number.parseInt(id, 10);
 
-    if (!Number.isInteger(userID)) {
-        throw new Error("Geçersiz user ID.");
-    }
+  if (!Number.isInteger(userID)) {
+    throw new Error('Geçersiz user ID.');
+  }
 
-    return await userRepository.delet(userID);
-}
+  return await userRepository.delete(userID);
+};
 
-exports.userBul = async (query) => {
-   
-    const filters = {
-       email : query.email,
-       name : query.name
-    };
-    
-    return await userRepository.findByFilters(filters);
+exports.userBul = async (query = {}) => {
+  const filters = {
+    email: query.email,
+    name: query.name,
+  };
+
+  return await userRepository.findByFilters(filters);
 };
