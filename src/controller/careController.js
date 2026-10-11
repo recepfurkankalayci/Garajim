@@ -1,61 +1,33 @@
 const careService = require('../services/careServices');
+const asyncHandler = require('../utils/asyncHandler');
 
-exports.bakimolustur = async (req, res) => {
-  try {
+exports.bakimolustur = asyncHandler(async (req, res, next)=> {
     const yeniBakim = await careService.bakimEkle(req.body);
     res.status(200).json({ mesaj: 'bakım oluşturuldu', yeniBakim });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ hata: 'bakım oluşturulamadı. verilerinizi kontrol ediniz' });
-  }
-};
+});
 
-exports.bakimsil = async (req, res) => {
-  try {
+exports.bakimsil = asyncHandler(async (req, res, next)=> {
     const silinenbakim = await careService.bakimSil(req.params.id);
     res.status(200).json({ mesaj: 'bakım silindi', silinenbakim });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ hata: 'bakım silinemedi. verilerinizi kontrol ediniz' });
-  }
-};
+});
 
-exports.bakimguncelle = async (req, res) => {
-  try {
+exports.bakimguncelle = asyncHandler(async (req, res, next)=> {
     const guncellenenBakim = await careService.bakimGuncelle(req.params.id, req.body);
     res.status(200).json({ mesaj: 'bakım güncellendi', guncellenenBakim });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ hata: 'bakım güncellenemedi. verilerinizi kontrol ediniz' });
-  }
-};
+});
 
-exports.bakimListele = async (_, res) => {
-  try {
+exports.bakimListele = asyncHandler(async (req, res, next) => {
+  
     const bakimlar = await careService.bakimListele();
     res.status(200).json({ mesaj: 'bakımlar listelendi', bakimlar });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ mesaj: 'bakımlar listelenemedi' });
-  }
-};
+});
 
-exports.bakimFiltrele = async (req, res) => {
-  try {
+exports.bakimFiltrele = asyncHandler(async (req, res, next)=> {
     const filtrelenmisListe = await careService.bakimBul(req.query);
     res.status(200).json({ mesaj: 'bakımlar filtelendi', filtrelenmisListe });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ mesaj: 'bakımlar listelenemedi' });
-  }
-};
+});
 
-exports.bakimGetir = async (req, res) => {
-  try {
+exports.bakimGetir = asyncHandler(async (req, res, next)=> {
     const bakim = await careService.bakimGetir(req.params.id);
     res.status(200).json({ mesaj: 'bakım bulundu', bakim });
-  } catch (error) {
-    console.error('Bakım bulunurken hata oluştu.', error);
-    res.status(500).json({ hata: 'bakım bulunamadı, lütfen verileri kontrol ediniz' });
-  }
-};
+});
