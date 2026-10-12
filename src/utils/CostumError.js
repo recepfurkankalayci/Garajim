@@ -4,4 +4,4 @@ class CostumError extends Error {
         this.statusCode=statusCode
     }
 }
-module.export = CostumError;
+module.exports = CostumError;

@@ -1,8 +1,9 @@
 const express = require('express');
 const cors = require('cors');
 
-const errorHandler = require('./middlewares/errorHandler');
-const CustomError = require('./utils/CustomError');
+
+const { errorHandler } = require('./middleware/errorHandle');
+const {CostomError} = require('./utils/CostumError');
 const carsRouter = require('./router/carsRouter');
 const careRouter = require('./router/careRouter');
 const userRouter = require('./router/userRouter');
@@ -19,7 +20,7 @@ app.use('/bakimlar', careRouter);
 app.use('/kullanicilar', userRouter);
 app.use('/auth', authRoutes);
 
-app.all('*', (req, res, next) => {
+app.all('/{*splat}', (req, res, next) => {
     next(new CustomError(`Bu sunucuda ${req.originalUrl} adresi bulunamadı!`, 404));
 });
 
