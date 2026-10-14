@@ -3,7 +3,7 @@ const cors = require('cors');
 
 
 const { errorHandler } = require('./middleware/errorHandle');
-const {CostomError} = require('./utils/CostumError');
+const CostumError = require('./utils/CostumError');
 const carsRouter = require('./router/carsRouter');
 const careRouter = require('./router/careRouter');
 const userRouter = require('./router/userRouter');
@@ -21,12 +21,16 @@ app.use('/kullanicilar', userRouter);
 app.use('/auth', authRoutes);
 
 app.all('/{*splat}', (req, res, next) => {
-    next(new CustomError(`Bu sunucuda ${req.originalUrl} adresi bulunamadı!`, 404));
+    next(new CostumError(`Bu sunucuda ${req.originalUrl} adresi bulunamadı!`, 404));
 });
 
 
 app.use(errorHandler);
 
-app.listen(port, () => {
+if(process.env.NODE_ENV !== "test"){
+  app.listen(port, () => {
   console.log(`Sunucu http://localhost:${port} adresinde dinleniyor...`);
 });
+}
+
+module.exports = app;
