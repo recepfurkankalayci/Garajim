@@ -5,9 +5,11 @@ services:
       dockerfile: dockerfile
     ports:
       - "3000:3000"
+    env_file:
+      - .env
     environment:
-      - DATABASE_URL=postgresql://postgres:1234@db:5432/garajim?schema=public
-      - NODE_ENV=production
+      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${DB_PASSWORD:?DB_PASSWORD .env dosyasında tanımlanmalı}@db:5432/${POSTGRES_DB:-garajim}?schema=public
+      NODE_ENV: ${NODE_ENV:-production}
     depends_on:
       db:
         condition: service_healthy
@@ -19,9 +21,9 @@ services:
   db:
     image: postgres:15-alpine
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 1234
-      POSTGRES_DB: garajim
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD .env dosyasında tanımlanmalı}
+      POSTGRES_DB: ${POSTGRES_DB:-garajim}
     ports:
       - "5432:5432"
     volumes:

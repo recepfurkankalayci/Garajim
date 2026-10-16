@@ -29,4 +29,15 @@ cd garajim
 npm install
 ```
 
-3. Çevresel değişkenleri (.env) ve Prisma veritabanı bağlantılarını ayarladıktan sonra projeyi başlatın.
+3. Ortam değişkenlerini oluşturup kendi değerlerinizi girin:
+```bash
+Copy-Item .env.example .env
+```
+`.env` dosyasındaki `DB_PASSWORD` değerini güçlü ve size özel bir parola ile değiştirin. Gerçek `.env` dosyasını GitHub'a göndermeyin; yalnızca `.env.example` dosyasını paylaşın.
+
+4. Docker ile uygulamayı ve veritabanını başlatın:
+```bash
+docker compose up --build -d
+```
+
+Compose, uygulama konteynerinde veritabanı adresini `db` hizmet adına göre ayarlar. Yerel makinenizden Prisma komutları çalıştırırken `.env` içindeki `DATABASE_URL` adresinin `localhost:5432` kullandığından emin olun.
