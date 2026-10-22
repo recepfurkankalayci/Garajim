@@ -10,6 +10,8 @@ const {
   aracGetir,
 } = require('../controller/carsController');
 
+router.use(authMiddleware);
+
 router.put('/:id', aracGüncele);
 router.get('/listele', aracListele);
 router.get('/filtrele', aracBul);

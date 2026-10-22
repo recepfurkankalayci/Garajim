@@ -10,6 +10,8 @@ const {
   kullaniciFiltrele,
 } = require('../controller/userController');
 
+router.use(authMiddleware);
+
 router.get('/filtrele', kullaniciFiltrele);
 router.get('/listele', kullaniciListele);
 router.put('/:id', kulaniciGüncelle);

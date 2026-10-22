@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const care = require('../controller/careController');
 
+router.use(authMiddleware);
+
 router.get('/listele', care.bakimListele);
 router.get('/filtrele', care.bakimFiltrele);
 router.put('/:id', care.bakimguncelle);
