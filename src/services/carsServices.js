@@ -5,10 +5,10 @@ exports.aracEkle = async (data) => {
 };
 
 exports.aracListele = async () => {
-  return await carRepository.findAll();
+  return await carRepository.findAll(userId);
 };
 
-exports.aracGetir = async (id) => {
+exports.aracGetir = async (id,userId) => {
   const aracID = Number.parseInt(id, 10);
 
   if (!Number.isInteger(aracID)) {
@@ -17,14 +17,15 @@ exports.aracGetir = async (id) => {
 
   const arac = await carRepository.findById(aracID);
 
-  if (!arac) {
-    throw new Error('Araç bulunamadı.');
+  if (!arac || arac.userID !== userId) {
+    throw new Error('Araç bulunamadı veya bu araca erişim yetkiniz yok.');
   }
 
   return arac;
 };
 
-exports.aracGuncelle = async (id, data) => {
+exports.aracGuncelle = async (id,userId, data) => {
+  await exports.aracGetir(id, userId);
   const aracID = Number.parseInt(id, 10);
 
   if (!Number.isInteger(aracID)) {
@@ -34,7 +35,8 @@ exports.aracGuncelle = async (id, data) => {
   return await carRepository.update(aracID, data);
 };
 
-exports.aracSil = async (id) => {
+exports.aracSil = async (id,userId) => {
+  await exports.aracGetir(id, userId);
   const aracID = Number.parseInt(id, 10);
 
   if (!Number.isInteger(aracID)) {
@@ -44,8 +46,9 @@ exports.aracSil = async (id) => {
   return await carRepository.delete(aracID);
 };
 
-exports.aracBul = async (query = {}) => {
+exports.aracBul = async (userId,query = {}) => {
   const filters = {
+    userID: userId,
     brand: query.brand,
     model: query.model,
     license_plate: query.license_plate,

@@ -4,8 +4,12 @@ exports.create = async (data) => {
   return await prisma.care.create({ data });
 };
 
-exports.findAll = async () => {
-  return await prisma.care.findMany();
+exports.findAll = async (userId) => {
+  return await prisma.care.findMany({
+    where: {
+      car: { userID: userId },
+    },
+  });
 };
 
 exports.delete = async (id) => {
@@ -20,7 +24,10 @@ exports.update = async (id, data) => {
 };
 
 exports.findById = async (id) => {
-  return await prisma.care.findUnique({ where: { id } });
+  return await prisma.care.findUnique({
+    where: { id },
+    include: { car: true },
+  });
 };
 
 exports.findByFilters = async (filters) => {

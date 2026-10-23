@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const helmet = require('helmet');
 
 
 const { errorHandler } = require('./middleware/errorHandle');
@@ -12,6 +13,7 @@ const authRoutes = require('./router/authRouter');
 const app = express();
 const port = 3000;
 
+app.use(helmet());
 app.use(cors());
 app.use(express.json());
 

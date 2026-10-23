@@ -4,8 +4,10 @@ exports.create = async (data) => {
   return await prisma.cars.create({ data });
 };
 
-exports.findAll = async () => {
-  return await prisma.cars.findMany();
+exports.findAll = async (userId) => {
+  return await prisma.cars.findMany({
+    where: { userID: userId }
+  });
 };
 
 exports.delete = async (id) => {
