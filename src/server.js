@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
-
+const { globalLimiter, authLimiter } = require('./middleware/rateLimiter');
 
 const { errorHandler } = require('./middleware/errorHandle');
 const CostumError = require('./utils/CostumError');
@@ -15,12 +15,14 @@ const port = 3000;
 
 app.use(helmet());
 app.use(cors());
+app.use(globalLimiter);
 app.use(express.json());
+
 
 app.use('/araclar', carsRouter);
 app.use('/bakimlar', careRouter);
 app.use('/kullanicilar', userRouter);
-app.use('/auth', authRoutes);
+app.use('/auth', authLimiter,authRoutes);
 
 app.all('/{*splat}', (req, res, next) => {
     next(new CostumError(`Bu sunucuda ${req.originalUrl} adresi bulunamadı!`, 404));
