@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const authMiddleware = require('../middleware/authMiddleware');
 
 const {
   aracEkle,
@@ -20,4 +21,3 @@ router.delete('/:id', aracSil);
 router.get('/:id', aracGetir);
 
 module.exports = router;
-

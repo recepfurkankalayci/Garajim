@@ -1,9 +1,9 @@
 const rateLimit = require("express-rate-limit");
 
-exports.globalLimitlrt = rateLimit({
+exports.globalLimiter = rateLimit({
     windowMs: 15*60*1000,
     max : 100,
-    standartHeaders : true,
+    standardHeaders : true,
     legacyHeaders:false,
     message: {
         succes:false,

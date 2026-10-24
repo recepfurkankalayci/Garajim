@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const authMiddleware = require('../middleware/authMiddleware');
 const care = require('../controller/careController');
 
 router.use(authMiddleware);
@@ -12,4 +13,3 @@ router.delete('/:id', care.bakimsil);
 router.get('/:id', care.bakimGetir);
 
 module.exports = router;
-

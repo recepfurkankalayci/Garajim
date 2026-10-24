@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const authMiddleware = require('../middleware/authMiddleware');
 
 const {
   kulaniciGüncelle,
@@ -20,4 +21,3 @@ router.get('/:id', kullaniciGetir);
 router.post('/olustur', kullaniciolustur);
 
 module.exports = router;
-

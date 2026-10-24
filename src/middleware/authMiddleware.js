@@ -9,7 +9,7 @@ module.exports = (req,res,next)=> {
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return res.status(401).json({ error: 'Erişim reddedildi. Geçerli bir token bulunamadı.' });
   }
-  const token = authHeader.split('')[1];
+  const token = authHeader.split(' ')[1];
 
   try{
     const decoded = jwt.verify(token,JWT_SECRET);
