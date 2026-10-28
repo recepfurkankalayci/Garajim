@@ -83,6 +83,10 @@ garajim/
 
 ## 4. Veritabanı Modeli
 
+Aşağıda proje veritabanı ilişkilerinin görsel özeti yer almaktadır:
+
+![ER Diagram](./docs/erd.svg)
+
 Prisma schema dosyasında proje temel olarak üç ana varlık modellemektedir:
 
 ### User

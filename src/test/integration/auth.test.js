@@ -1,5 +1,5 @@
 const request = require('supertest');
-const app = require('../server');
+const app = require('../../server');
 
 describe('Kimlik Doğrulama (Auth) testleri', ()=>{
     it("gecersiz bir e-posta hatası girildiginde Zod bizi 400 hatası ile reddetmeli",async() =>{

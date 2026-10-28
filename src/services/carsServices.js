@@ -1,6 +1,8 @@
 const carRepository = require('../repositories/CarsRepository');
+const logger = require('../utils/logger');
 
 exports.aracEkle = async (data) => {
+  logger.info("Yeni araç eklendi. Araç ID: ${yeniArac.id}, Kullanıcı: ${userID}");
   return await carRepository.create(data);
 };
 
