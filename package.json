@@ -9,7 +9,8 @@
     "test": "jest --watchAll",
     "prisma:validate": "prisma validate",
     "prisma:generate": "prisma generate",
-    "prisma:push": "prisma db push"
+    "prisma:push": "prisma db push",
+    "swagger": "node src/utils/swagger.js"
   },
   "keywords": [],
   "author": "",
@@ -26,6 +27,7 @@
     "helmet": "^8.3.0",
     "jsonwebtoken": "^9.0.3",
     "pg": "^8.23.0",
+    "swagger-ui-express": "^5.0.1",
     "winston": "^3.19.0",
     "zod": "^4.6.7"
   },
@@ -34,6 +36,7 @@
     "jest": "^30.5.2",
     "prisma": "^7.0.0",
     "prisma-erd-generator": "^3.2.1",
-    "supertest": "^7.3.1"
+    "supertest": "^7.3.1",
+    "swagger-autogen": "^2.23.7"
   }
 }

@@ -1,0 +1,127 @@
+module.exports = {
+  '/araclar/listele': {
+    get: {
+      summary: 'Tüm araçları listeler',
+      tags: ['Araçlar'],
+      responses: {
+        200: {
+          description: 'Araç listesi döndü',
+        },
+        401: {
+          description: 'Token eksik veya geçersiz',
+        },
+      },
+    },
+  },
+
+  '/araclar/filtrele': {
+    get: {
+      summary: 'Araç filtreleme işlemi',
+      tags: ['Araçlar'],
+      responses: {
+        200: {
+          description: 'Filtrelenmiş araç listesi',
+        },
+        400: {
+          description: 'Geçersiz filtre parametresi',
+        },
+      },
+    },
+  },
+
+  '/araclar/ekle': {
+    post: {
+      summary: 'Yeni araç ekler',
+      tags: ['Araçlar'],
+      requestBody: {
+        required: true,
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+              properties: {
+                marka: { type: 'string' },
+                model: { type: 'string' },
+                yil: { type: 'integer' },
+              },
+              required: ['marka', 'model'],
+            },
+          },
+        },
+      },
+      responses: {
+        201: {
+          description: 'Araç başarıyla eklendi',
+        },
+        400: {
+          description: 'İstek verisi hatalı',
+        },
+      },
+    },
+  },
+
+  '/araclar/{id}': {
+    get: {
+      summary: 'Tek araç getirir',
+      tags: ['Araçlar'],
+      parameters: [
+        {
+          name: 'id',
+          in: 'path',
+          required: true,
+          schema: { type: 'string' },
+        },
+      ],
+      responses: {
+        200: {
+          description: 'Araç bulundu',
+        },
+        404: {
+          description: 'Araç bulunamadı',
+        },
+      },
+    },
+
+    put: {
+      summary: 'Araç günceller',
+      tags: ['Araçlar'],
+      parameters: [
+        {
+          name: 'id',
+          in: 'path',
+          required: true,
+          schema: { type: 'string' },
+        },
+      ],
+      responses: {
+        200: {
+          description: 'Araç güncellendi',
+        },
+        404: {
+          description: 'Araç bulunamadı',
+        },
+      },
+    },
+
+    delete: {
+      summary: 'Araç siler',
+      tags: ['Araçlar'],
+      parameters: [
+        {
+          name: 'id',
+          in: 'path',
+          required: true,
+          schema: { type: 'string' },
+        },
+      ],
+      responses: {
+        200: {
+          description: 'Araç silindi',
+        },
+        404: {
+          description: 'Araç bulunamadı',
+        },
+      },
+    },
+  },
+};
