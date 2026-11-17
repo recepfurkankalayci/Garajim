@@ -10,7 +10,7 @@ exports.userListele = async () => {
 };
 
 
-exports.userGetir = async (id, tokenUserId) => {
+exports.userGetir = async (id, tokenUser) => {
   const userID = Number.parseInt(id, 10);
 
   if (!Number.isInteger(userID)) {
@@ -18,7 +18,7 @@ exports.userGetir = async (id, tokenUserId) => {
   }
 
 
-  if (userID !== tokenUserId) {
+  if (tokenUser.role !== 'ADMIN' && userID !== tokenUser.id) {
     throw new Error('Bu kullanıcı bilgilerine erişim yetkiniz yok.');
   }
 
@@ -32,8 +32,8 @@ exports.userGetir = async (id, tokenUserId) => {
 };
 
 
-exports.userGuncelle = async (id, tokenUserId, data) => {
-  await exports.userGetir(id, tokenUserId);
+exports.userGuncelle = async (id, reqUser, data) => {
+  await exports.userGetir(id, reqUser);
 
   const userID = Number.parseInt(id, 10);
   return await userRepository.update(userID, data);

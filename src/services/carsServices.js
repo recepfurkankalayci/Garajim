@@ -11,11 +11,6 @@ exports.aracListele = async () => {
 };
 
 exports.aracGetir = async (id,userId) => {
-  const aracID = Number.parseInt(id, 10);
-
-  if (!Number.isInteger(aracID)) {
-    throw new Error('Geçersiz araç ID.');
-  }
 
   const arac = await carRepository.findById(aracID);
 
@@ -28,23 +23,11 @@ exports.aracGetir = async (id,userId) => {
 
 exports.aracGuncelle = async (id,userId, data) => {
   await exports.aracGetir(id, userId);
-  const aracID = Number.parseInt(id, 10);
-
-  if (!Number.isInteger(aracID)) {
-    throw new Error('Geçersiz araç ID.');
-  }
-
   return await carRepository.update(aracID, data);
 };
 
 exports.aracSil = async (id,userId) => {
   await exports.aracGetir(id, userId);
-  const aracID = Number.parseInt(id, 10);
-
-  if (!Number.isInteger(aracID)) {
-    throw new Error('Geçersiz araç ID.');
-  }
-
   return await carRepository.delete(aracID);
 };
 

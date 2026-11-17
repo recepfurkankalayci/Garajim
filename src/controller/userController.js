@@ -18,7 +18,7 @@ exports.kullaniciListele = asyncHandler(async (req, res, next) => {
 });
 
 exports.kulaniciGüncelle = asyncHandler(async (req, res, next)=> {
-    const guncellenenKullanici = await userService.userGuncelle(req.params.id,req.user.userId, req.body);
+    const guncellenenKullanici = await userService.userGuncelle(req.params.id,req.user, req.body);
     res.status(200).json({ mesaj: 'kullanıcı güncellendi', guncellenenKullanici });
 });
 
@@ -28,6 +28,7 @@ exports.kullaniciFiltrele = asyncHandler(async (req, res, next)=> {
 });
 
 exports.kullaniciGetir = asyncHandler(async (req, res, next)=> {
-    const kullanici = await userService.userGetir(req.params.id,req.user.userId);
+    const kullanici = await userService.userGetir(req.params.id,req.user);
     res.status(200).json({ mesaj: 'Kullanıcı bulundu.', kullanici });
 });
+
