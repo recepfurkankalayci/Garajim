@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const authMiddleware = require('../middleware/authMiddleware');
-const validate = require("../middleware/validate");
+const {validate} = require("../middleware/validate");
 const adminMiddleware = require('../middleware/adminMiddleware');
 const {profilGuncelleSchema,
        kullaniciIdSchema

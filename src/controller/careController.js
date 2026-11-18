@@ -28,6 +28,6 @@ exports.bakimFiltrele = asyncHandler(async (req, res, next)=> {
 });
 
 exports.bakimGetir = asyncHandler(async (req, res, next)=> {
-    const bakim = await careService.bakimGetir(req.params.id,req.user.userId);
+    const bakim = await careService.bakimGetir(req.params.id,req.user.userId,req.user.role);
     res.status(200).json({ mesaj: 'bakım bulundu', bakim });
 });

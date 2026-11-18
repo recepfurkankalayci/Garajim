@@ -15,7 +15,7 @@ exports.aracIdSchema = z.object({
 });
 
 exports.aracFiltreSchema = z.object({
-    brand : z.string.min(2,"arama için en az ik karakter giriniz").optional(),
+    brand : z.string().min(2,"arama için en az ik karakter giriniz").optional(),
     model : z.string().optional(),
     year : z.coerce.number().int().min(1600).optional()
 });

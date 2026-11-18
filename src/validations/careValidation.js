@@ -1,6 +1,6 @@
 const{z}= require("zod");
 
-exports.careEkleShema = z.object({
+exports.careEkleSchema = z.object({
     header: z.string().min(3, "Bakım başlığı en az 3 karakter olmalıdır."),
     hkm: z.number().int().nonnegative("Bakım kilometresi eksi bir değer olamaz."),
     cost: z.number().int().nonnegative("Maliyet eksi bir değer olamaz. (Ücretsiz işlemse 0 girebilirsiniz)"),

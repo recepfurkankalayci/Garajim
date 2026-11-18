@@ -8,7 +8,7 @@ const {careEkleShema,
     careFiltreSchema
 }=require("../validations/careValidation");
 
-const validate = require("../middleware/validate");
+const {validate} = require("../middleware/validate");
 router.use(authMiddleware);
 
 router.get('/listele', care.bakimListele);

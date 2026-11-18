@@ -1,6 +1,6 @@
 const CostumError = require('../utils/CostumError');
 
-const validate = (schema,source = "body") => {
+exports.validate = (schema,source = "body") => {
     return (req,res,next) => {
         try {          
             req.body = schema.parse(req[source]);
@@ -12,4 +12,3 @@ const validate = (schema,source = "body") => {
         }
     };
 };
-module.exports = validate;
