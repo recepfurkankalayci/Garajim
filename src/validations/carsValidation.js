@@ -5,7 +5,8 @@ exports.aracEkleSchema = z.object({
     brand: z.string().min(2, "Marka en az 2 karakter olmalıdır."),
     model: z.string().min(1, "Model boş bırakılamaz."),
     license_plate: z.string().min(5, "Lütfen geçerli bir plaka giriniz."),
-    gkm: z.number().nonnegative("Güncel kilometre eksi bir değer olamaz.")
+    gkm: z.number().nonnegative("Güncel kilometre eksi bir değer olamaz."),
+    fuelType: z.enum(['BENZIN', 'DIZEL', 'BENZIN_LPG', 'HIBRIT', 'ELEKTRIK'])
 })
 
 exports.aracGuncelleSchema = exports.aracEkleSchema.partial();

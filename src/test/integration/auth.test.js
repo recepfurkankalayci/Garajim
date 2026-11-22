@@ -9,7 +9,8 @@ describe('Kimlik Doğrulama (Auth) testleri', ()=>{
         .send({
             isim : "furkan",
             email: "hatali",
-            sifre:"12341"
+            sifre:"12341",
+            telephone:"5550402667"
         })
     expect(response.status).toBe(400);
 
@@ -21,7 +22,8 @@ describe('Kimlik Doğrulama (Auth) testleri', ()=>{
             .send({
                 isim: "Furkan",
                 email: "furkan@test.com",
-                sifre: "123" 
+                sifre: "123",
+                telephone:"5550402667" 
             });
 
         expect(response.status).toBe(400);

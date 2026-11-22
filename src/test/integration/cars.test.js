@@ -42,7 +42,8 @@ describe('araç entegrasyon testi',()=>{
         model: 'Linea',
         license_plate: '06TEST01',
         year: 2010,
-        gkm: 0
+        gkm: 0,
+        fuelType: 'DIZEL'
       });
       expect(res.status).toBe(401);
     })
@@ -54,7 +55,10 @@ describe('araç entegrasyon testi',()=>{
       .send({
         brand: '',
         year: 'ikibinon',
-        gkm: 0
+        gkm: 0,
+        model: 'Linea',
+        license_plate: `06TST${Math.floor(Math.random() * 900 + 100)}`,
+        fuelType: 'DIZEL'
       });
 
     expect(res.status).toBe(400);
@@ -71,7 +75,8 @@ describe('araç entegrasyon testi',()=>{
         model: 'Linea',
         license_plate: `06TST${Math.floor(Math.random() * 900 + 100)}`,
         year: 2010,
-        gkm: 0
+        gkm: 0,
+        fuelType: 'DIZEL'
       });
 
     expect(res.status).toBe(201);

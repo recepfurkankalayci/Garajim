@@ -43,6 +43,7 @@ module.exports = {
                 marka: { type: 'string' },
                 model: { type: 'string' },
                 yil: { type: 'integer' },
+                yakitTürü: {type: 'FuelType'}
               },
               required: ['marka', 'model'],
             },

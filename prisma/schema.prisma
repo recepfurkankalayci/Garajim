@@ -10,6 +10,14 @@ datasource db {
   provider = "postgresql"
 }
 
+enum FuelType {
+  BENZIN
+  DIZEL
+  BENZIN_LPG
+  HIBRIT
+  ELEKTRIK
+}
+
 model User{
     id Int @id  @default(autoincrement())
     email String @unique
@@ -28,7 +36,7 @@ model Cars{
     year Int
     userID Int
     gkm Int
-
+    fuelType FuelType @default(BENZIN)
     user User @relation(fields: [userID], references: [id])
     care Care[]
 }
