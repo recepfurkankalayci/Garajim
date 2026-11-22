@@ -1,32 +1,36 @@
 const careRepository = require('../repositories/CareRepository');
 const carsService = require('./carsServices');
+const logger = require('../utils/logger');
+const CostumError = require('../utils/CostumError');
 
-exports.bakimEkle = async (data) => {
-  await carsService.aracGetir(data.carID, data.userId);
-  const { userId, ...bakimVerisi } = data;
+exports.bakimEkle = async (data, userId) => {
+  await carsService.aracGetir(data.carID, userId);
+  const bakimVerisi = { ...data };
   const yeniBakim = await careRepository.create(bakimVerisi)
-  logger.info(`Yeni bakım kaydı eklendi. BakımID: ${id}, İşlemi Yapan Kullanıcı: ${userId}`);
+  logger.info(`Yeni bakım kaydı eklendi. BakımID: ${yeniBakim.id}, İşlemi Yapan Kullanıcı: ${userId}`);
   return yeniBakim;
 };
 
 exports.bakimListele = async (userId) => {
   const bakimListesi = await careRepository.findAll(userId);
-  logger.info(`Bakım kaydıtları listelendi. BakımID: ${id}, İşlemi Yapan Kullanıcı: ${userId}`);
+  logger.info(`Bakım kayıtları listelendi. İşlemi Yapan Kullanıcı: ${userId}`);
   return bakimListesi;
 };
 
-exports.bakimGetir = async (id,userId) => {
-  const bakim = await careRepository.findById(id);
+exports.bakimGetir = async (id,userId,role) => {
+  const bakimID = Number.parseInt(id, 10);
+  const bakim = await careRepository.findById(bakimID);
   if (!bakim || bakim.car?.userID !== userId) {
-    if(req.user.role !== "ADMİN")
-    throw new CostumError('Bakım bulunamadı veya bu kayda erişim yetkiniz yok.', 404);
+    if (role !== 'ADMIN') {
+      throw new CostumError('Bakım bulunamadı veya bu kayda erişim yetkiniz yok.', 404);
+    }
   }
-  logger.info(`Bakım kaydı id ile bulundu. BakımID: ${id}, İşlemi Yapan Kullanıcı: ${userId}`);
+  logger.info(`Bakım kaydı id ile bulundu. BakımID: ${bakimID}, İşlemi Yapan Kullanıcı: ${userId}`);
   return bakim;
 };
 
 exports.bakimGuncelle = async (id, userId, data) => {
-  await exports.bakimGetir(id, userId);
+  await exports.bakimGetir(id, userId, 'USER');
   const bakimID = Number.parseInt(id, 10);
   const guncelBakim = await careRepository.update(bakimID, data);
   logger.info(`Bakım kaydı güncellendi. BakımID: ${id}, İşlemi Yapan Kullanıcı: ${userId}`);
@@ -42,7 +46,7 @@ exports.bakimSil = async (id, userId) => {
   return silinenBakim;
 };
 
-exports.bakimBul = async (query = {}) => {
+exports.bakimBul = async (query = {}, userId) => {
   const filters = {
     car: { userID: userId },
     header: query.header,

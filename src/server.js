@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
+require('dotenv').config({ path: require('path').resolve(__dirname, '..', '.env') });
 const { globalLimiter, authLimiter } = require('./middleware/rateLimiter');
 const swaggerUi = require('swagger-ui-express');
 

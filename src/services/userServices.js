@@ -1,4 +1,6 @@
 const userRepository = require('../repositories/UserRepostory'); 
+const logger = require('../utils/logger');
+const CostumError = require('../utils/CostumError');
 
 exports.userEkle = async (data,reqUser) => {
   if (reqUser.role !== 'ADMIN') {
@@ -19,12 +21,13 @@ exports.userListele = async (reqUser) => {
 };
 
 exports.userGetir = async (id, reqUser) => {
+ const numericId = Number.parseInt(id, 10);
  const isAdmin = reqUser.role === 'ADMIN';
-const isSelf = reqUser.userId === id; 
+const isSelf = reqUser.userId === numericId; 
 if (!isAdmin && !isSelf) {
   throw new CostumError('Bu kullanıcı bilgilerine erişim yetkiniz yok.', 403);
 }
-const user = await userRepository.findById(id);
+const user = await userRepository.findById(numericId);
 if (!user) {
   throw new CostumError('Kullanıcı bulunamadı.', 404);
 } 
@@ -33,7 +36,8 @@ return user;
 
 exports.userGuncelle = async (id, reqUser, data) => {
   await exports.userGetir(id, reqUser);
-  const updatedUser = await userRepository.update(id, data);
+  const numericId = Number.parseInt(id, 10);
+  const updatedUser = await userRepository.update(numericId, data);
   logger.info(`Kullanıcı güncellendi. Güncellenen ID: ${id}, İşlemi Yapan: ${reqUser.userId}`);
   
   return updatedUser;
@@ -41,7 +45,8 @@ exports.userGuncelle = async (id, reqUser, data) => {
 
 exports.userSil = async (id, reqUser) => {
   await exports.userGetir(id, reqUser);
-  const deletedUser = await userRepository.delete(id);
+  const numericId = Number.parseInt(id, 10);
+  const deletedUser = await userRepository.delete(numericId);
   logger.info(`Kullanıcı silindi. Silinen ID: ${id}, İşlemi Yapan: ${reqUser.userId}`);
   return deletedUser;
 };

@@ -7,7 +7,10 @@ exports.validate = (schema,source = "body") => {
             next();
         } catch (error) {
 
-            const errorMessage = error.issues.map(e => e.message).join(' | ');
+            const issues = Array.isArray(error?.issues) ? error.issues : [];
+            const errorMessage = issues.length > 0
+                ? issues.map(e => e.message).join(' | ')
+                : error?.message || 'Geçersiz veri.';
             next(new CostumError(errorMessage, 400));           
         }
     };
