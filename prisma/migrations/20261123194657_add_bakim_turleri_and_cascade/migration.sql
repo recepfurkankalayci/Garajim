@@ -1,0 +1,16 @@
+-- DropForeignKey
+ALTER TABLE "Care" DROP CONSTRAINT "Care_carID_fkey";
+
+-- DropForeignKey
+ALTER TABLE "Cars" DROP CONSTRAINT "Cars_userID_fkey";
+
+-- AlterTable
+ALTER TABLE "Care" ADD COLUMN     "careTypes" TEXT[],
+ALTER COLUMN "header" DROP NOT NULL,
+ALTER COLUMN "transaction_date" SET DEFAULT CURRENT_TIMESTAMP;
+
+-- AddForeignKey
+ALTER TABLE "Cars" ADD CONSTRAINT "Cars_userID_fkey" FOREIGN KEY ("userID") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Care" ADD CONSTRAINT "Care_carID_fkey" FOREIGN KEY ("carID") REFERENCES "Cars"("id") ON DELETE CASCADE ON UPDATE CASCADE;

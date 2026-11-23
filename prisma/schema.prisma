@@ -18,6 +18,7 @@ enum FuelType {
   ELEKTRIK
 }
 
+
 model User{
     id Int @id  @default(autoincrement())
     email String @unique
@@ -37,16 +38,17 @@ model Cars{
     userID Int
     gkm Int
     fuelType FuelType @default(BENZIN)
-    user User @relation(fields: [userID], references: [id])
+    user User @relation(fields: [userID], references: [id], onDelete: Cascade)
     care Care[]
 }
 
 model Care{
     id Int @id @default(autoincrement())
-    header String 
+    header String?
     hkm Int
     cost Int
-    transaction_date DateTime
+    careType String
+    transaction_date DateTime @default(now())
     carID Int
-    car Cars @relation(fields: [carID], references: [id])
+    car Cars @relation(fields: [carID], references: [id], onDelete: Cascade)
 }

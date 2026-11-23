@@ -2,6 +2,10 @@ const carRepository = require('../repositories/CarsRepository');
 const logger = require('../utils/logger');
 const CostumError = require('../utils/CostumError');
 exports.aracEkle = async (data) => {
+  const mevcutArac = await carRepository.findByPlate(data.license_plate);
+  if (mevcutArac) {
+    throw new CostumError('Bu plaka zaten sistemde kayıtlı.', 409);
+  }
   const yeniArac = await carRepository.create(data);
   logger.info(`Yeni araç eklendi. Araç ID: ${yeniArac.id}, Kullanıcı: ${data.userID}`);
   return yeniArac;
@@ -18,22 +22,33 @@ exports.aracGetir = async (id,userId) => {
   if (!arac || arac.userID !== userId) {
     throw new CostumError('Araç bulunamadı veya bu araca erişim yetkiniz yok.', 404);
   }
-  logger.info(`Araç id ile getirildi. Araç ID: ${aracId}, Kullanıcı: ${userId}`);
   return arac;
 };
 
-exports.aracGuncelle = async (id,userId, data) => {
-  await exports.aracGetir(id, userId);
+exports.aracGuncelle = async (id, userId, data) => {
   const aracId = Number.parseInt(id, 10);
+  const mevcutArac = await exports.aracGetir(aracId, userId);
+
+  if (data.license_plate && data.license_plate !== mevcutArac.license_plate) {
+    const plakaMevcut = await carRepository.findByPlate(data.license_plate);
+    if (plakaMevcut) {
+      throw new CostumError('Bu plaka zaten sistemde kayıtlı.', 409);
+    }
+  }
+
+ 
+  const guncelArac = await carRepository.update(aracId, data);
+
   logger.info(`Araç güncellendi. Araç ID: ${aracId}, Kullanıcı: ${userId}`);
-  return await carRepository.update(aracId, data);
+  return guncelArac;
 };
 
 exports.aracSil = async (id,userId) => {
-  await exports.aracGetir(id, userId);
   const aracId = Number.parseInt(id, 10);
+  await exports.aracGetir(aracId, userId);
+  const silinenArac = await carRepository.delete(aracId);
   logger.info(`Araç silindi. Araç ID: ${aracId}, Kullanıcı: ${userId}`);
-  return await carRepository.delete(aracId);
+  return silinenArac;
 };
 
 exports.aracBul = async (userId,query = {}) => {
@@ -43,6 +58,7 @@ exports.aracBul = async (userId,query = {}) => {
     model: query.model,
     license_plate: query.license_plate,
     year: query.year,
+    fuelType : query.fuelType
   };
   logger.info(`Araçlar filtreler aracılığıyla getirildi. Kullanıcı: ${userId}`);
   return await carRepository.findByFilters(filters);

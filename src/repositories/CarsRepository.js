@@ -25,6 +25,10 @@ exports.findById = async (id) => {
   return await prisma.cars.findUnique({ where: { id } });
 };
 
+exports.findById = async (license_plate) => {
+  return await prisma.cars.findUnique({ where: { license_plate } });
+};
+
 exports.findByFilters = async (filters) => {
   return await prisma.cars.findMany({ where: filters });
 };
