@@ -29,9 +29,6 @@ if (process.env.NODE_ENV !== 'production' && Object.keys(swaggerDocument).length
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 }
 app.use(globalLimiter);
-
-
-
 app.use('/araclar', carsRouter);
 app.use('/bakimlar', careRouter);
 app.use('/kullanicilar', userRouter);

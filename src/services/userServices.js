@@ -1,7 +1,7 @@
 const userRepository = require('../repositories/UserRepostory'); 
 const logger = require('../utils/logger');
 const CostumError = require('../utils/CostumError');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 exports.userEkle = async (data,reqUser) => {
   if (reqUser.role !== 'ADMIN') {

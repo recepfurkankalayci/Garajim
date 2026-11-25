@@ -7,8 +7,10 @@ exports.create = async (data) => {
 exports.findAll = async (userId) => {
   return await prisma.care.findMany({
     where: {
-      car: { userID: userId },
+      car: { userID: userId }
     },
+    include: { car: true },
+    orderBy: {transaction_date : 'desc'}
   });
 };
 
@@ -31,5 +33,24 @@ exports.findById = async (id) => {
 };
 
 exports.findByFilters = async (filters) => {
-  return await prisma.care.findMany({ where: filters });
+  return await prisma.care.findMany({ 
+    where: filters,
+    include: { car: true },
+    orderBy: { transaction_date: 'desc' },
+  });
+};
+
+exports.updateWithCarKmUpdate = async (id, data, carId, yeniGkm) => {
+  const [guncellenenBakim] = await prisma.$transaction([
+    prisma.care.update({
+      where: { id },
+      data,
+    }),
+    prisma.cars.update({
+      where: { id: carId },
+      data: { gkm: yeniGkm },
+    }),
+  ]);
+
+  return guncellenenBakim;
 };
