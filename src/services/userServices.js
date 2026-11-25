@@ -54,7 +54,8 @@ exports.userGetir = async (id, reqUser) => {
 };
 
 exports.userGuncelle = async (id, reqUser, data) => {
-  await exports.userGetir(id, reqUser);
+  const numericId = Number.parseInt(id, 10);
+  await exports.userGetir(numericId, reqUser);
   const guncellenecekVeri = {
     name: data.name,
     email: data.email,
@@ -63,9 +64,10 @@ exports.userGuncelle = async (id, reqUser, data) => {
   if (reqUser.role === 'ADMIN' && data.role) {
     guncellenecekVeri.role = data.role;
   }
-  const updatedUser = await userRepository.update(id, guncellenecekVeri);
-  logger.info(`Kullanıcı güncellendi. Güncellenen ID: ${id}, İşlemi Yapan: ${reqUser.userId}`);
-  return updatedUser;
+  const updatedUser = await userRepository.update(numericId, guncellenecekVeri);
+  logger.info(`Kullanıcı güncellendi. Güncellenen ID: ${numericId}, İşlemi Yapan: ${reqUser.userId}`);
+  const { password, ...guvenliKullanici } = updatedUser;
+  return guvenliKullanici;
 };
 
 exports.userSil = async (id, reqUser) => {

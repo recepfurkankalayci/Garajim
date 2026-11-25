@@ -47,7 +47,7 @@ model Care{
     header String?
     hkm Int
     cost Int
-    careType String
+    bakimTuru String @map("careType")
     transaction_date DateTime @default(now())
     carID Int
     car Cars @relation(fields: [carID], references: [id], onDelete: Cascade)

@@ -3,6 +3,7 @@ const carsService = require('./carsServices');
 const logger = require('../utils/logger');
 const BAKIM_KURALLARI = require('../constants/careRules');
 const CostumError = require('../utils/CostumError');
+const { bakimDurumuHesapla } = require('../utils/careCalculator');
 
 exports.bakimEkle = async (data, userId) => {
  const arac = await carsService.aracGetir(data.carID, userId);
@@ -108,4 +109,28 @@ const filters = {
   if (query.transaction_date) filters.transaction_date = new Date(query.transaction_date);
 
   return await careRepository.findByFilters(filters);
+};
+
+
+exports.bakimDurumuGetir = async (carId, userId) => {
+
+  const arac = await carsService.aracGetir(carId, userId);
+  const gecmisBakimlar = await careRepository.findByCarId(arac.id);
+
+  const bakimlar = bakimDurumuHesapla(arac, gecmisBakimlar);
+
+  const ozet = {
+    gecikti: bakimlar.filter((b) => b.durum === 'GECIKTI').length,
+    yaklasti: bakimlar.filter((b) => b.durum === 'YAKLASTI').length,
+    guncel: bakimlar.filter((b) => b.durum === 'GUNCEL').length,
+    kayitYok: bakimlar.filter((b) => b.durum === 'KAYIT_YOK').length,
+  };
+
+  return {
+    aracId: arac.id,
+    guncelKm: arac.gkm,
+    yakitTipi: arac.fuelType,
+    ozet,
+    bakimlar,
+  };
 };

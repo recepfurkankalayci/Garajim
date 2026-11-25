@@ -17,5 +17,6 @@ router.put('/:id',validate(careIdSchema,"params"),validate(careGuncelleSchema), 
 router.post('/olustur',validate(careEkleSchema), care.bakimolustur);
 router.delete('/:id',validate(careIdSchema,"params"), care.bakimsil);
 router.get('/:id',validate(careIdSchema,"params"), care.bakimGetir);
+router.get('/durum/:carId', authMiddleware, care.bakimDurumuGetir);
 
 module.exports = router;

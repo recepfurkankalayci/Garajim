@@ -67,6 +67,7 @@ describe('bakım entegrasyon testi', () => {
         hkm: -1,
         cost: -5,
         transaction_date: 'gecersiz-tarih',
+        bakimTuru: 'MOTOR_YAGI',
         carID: 0,
       });
 
@@ -83,6 +84,7 @@ describe('bakım entegrasyon testi', () => {
         hkm: 120000,
         cost: 1000,
         transaction_date: '2026-11-21',
+        bakimTuru: 'MOTOR_YAGI',
         carID: createdCarId,
       });
     expect(res.status).toBe(200);

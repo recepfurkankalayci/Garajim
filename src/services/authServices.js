@@ -29,7 +29,7 @@ exports.register = async (data) => {
 };
 
 exports.login = async (email, password) => {
-  const normalizedEmail = data.email.trim().toLowerCase();
+  const normalizedEmail = email.trim().toLowerCase();
   const kullanici = await userRepository.findByEmail(normalizedEmail);
   if (!kullanici) {
     throw new CostumError('E-posta veya şifre hatalı.', 401);

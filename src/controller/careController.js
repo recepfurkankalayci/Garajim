@@ -31,3 +31,8 @@ exports.bakimGetir = asyncHandler(async (req, res, next)=> {
     const bakim = await careService.bakimGetir(req.params.id,req.user.userId,req.user.role);
     res.status(200).json({ mesaj: 'bakım bulundu', bakim });
 });
+
+exports.bakimDurumuGetir = asyncHandler(async (req, res,next) => {
+  const sonuc = await careServices.bakimDurumuGetir(req.params.carId, req.user.userId);
+  res.status(200).json(sonuc);
+});

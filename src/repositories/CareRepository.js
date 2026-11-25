@@ -54,3 +54,12 @@ exports.updateWithCarKmUpdate = async (id, data, carId, yeniGkm) => {
 
   return guncellenenBakim;
 };
+
+exports.findByCarId = async (carId) => {
+  return await prisma.care.findMany({
+    where: { carID: carId },
+    orderBy: [{ transaction_date: 'desc' }, { id: 'desc' }],
+  });
+};
+
+
